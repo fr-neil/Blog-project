@@ -59,6 +59,7 @@ const BlogList = () => {
                         return (
                             <BlogItem
                                 key={index}
+                                id={item.id}
                                 image={item.image}
                                 title={item.title}
                                 description={item.description}
