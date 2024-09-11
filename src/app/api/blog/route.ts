@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/config/db';
 import { writeFile } from 'fs/promises';
 import BlogModel from '../../../lib/models/BlogModel';
-const fs = require('fs');
+import fs from 'fs'; // Changed 'require' to 'import'
+import { NextRequest } from 'next/server';
 
 const LoadDB = async () => {
     await connectDB();
@@ -11,7 +12,8 @@ const LoadDB = async () => {
 LoadDB();
 
 //Api endpoint to get all blogs
-export async function GET(request) {
+export async function GET(request: NextRequest) {
+    // Added type annotation for 'request'
     const blogId = request.nextUrl.searchParams.get('id');
     if (blogId) {
         const blog = await BlogModel.findById(blogId);
@@ -57,21 +59,20 @@ export async function POST(req: Request) {
     }
 }
 
-export async function DELETE(request) {
+export async function DELETE(request: NextRequest) {
     const id = await request.nextUrl.searchParams.get('id');
     const blog = await BlogModel.findById(id);
 
-    fs.unlink(
-        `./public${blog.image}`,
-        (err) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            console.log('Image deleted successfully');
-        },
-        await BlogModel.findByIdAndDelete(id),
-    );
+    fs.unlink(`./public${blog.image}`, (err: NodeJS.ErrnoException | null) => {
+        // Added type annotation for 'err'
+        if (err) {
+            console.error(err);
+            return;
+        }
+        console.log('Image deleted successfully');
+    }); // Removed the third argument
+
+    await BlogModel.findByIdAndDelete(id); // Moved this line outside of fs.unlink
 
     return NextResponse.json({
         success: true,
