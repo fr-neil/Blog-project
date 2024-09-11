@@ -24,7 +24,7 @@ const Page = () => {
         setBlogs(response.data.blogs);
     };
 
-    const deleteBlog = async (mongoId: string) => {
+    const deleteBlog = async (mongoId: string | number) => {
         // {{ edit_1 }} Added type annotation for mongoId
         const response = await axios.delete(`/api/blog`, {
             params: { id: mongoId },

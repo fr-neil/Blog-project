@@ -5,7 +5,7 @@ import { assets } from '../../../assets/assets';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Layout = ({ children }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
             <div className='flex'>

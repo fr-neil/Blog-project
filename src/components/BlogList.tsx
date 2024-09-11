@@ -5,7 +5,15 @@ import axios from 'axios';
 
 const BlogList = () => {
     const [menu, setMenu] = useState('All');
-    const [blogs, setBlogs] = useState([]);
+    const [blogs, setBlogs] = useState<
+        {
+            _id: string;
+            image: string;
+            title: string;
+            description: string;
+            category: string;
+        }[]
+    >([]);
 
     const fetchBlogs = async () => {
         const response = await axios.get('/api/blog');

@@ -7,7 +7,7 @@ const EmailSchema = new mongoose.Schema({
     },
     date: {
         type: Date,
-        required: Date.now(),
+        required: true,
     },
 });
 

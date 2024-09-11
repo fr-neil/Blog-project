@@ -10,8 +10,16 @@ const BlogTableItem = ({
     deleteBlog,
     id,
     mongoId,
-}) => {
-    const BlogDate = new Date(date);
+}: {
+    authorImg?: string;
+    title?: string;
+    author?: string;
+    date?: string;
+    deleteBlog: (id: string | number) => void;
+    id: string | number;
+    mongoId: string;
+}): React.ReactElement => {
+    const BlogDate = new Date(date || '');
     return (
         <tr className='bg-white border-b '>
             <th
