@@ -4,6 +4,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+// Define the Blog interface
+interface Blog {
+    id: number;
+    title: string;
+    content: string;
+    author: string;
+    date: string;
+    authorImg: string;
+    mongoId: number; // {{ edit_1 }} Added id property
+    _id: string; // {{ edit_1 }} Added _id property
+}
+
 const Page = () => {
     const [blogs, setBlogs] = useState<Blog[]>([]);
 
