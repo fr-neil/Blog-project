@@ -4,42 +4,18 @@ import { assets, blog_data } from '../../../../assets/assets';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-
-// Define a type for blog data
-// type BlogPost = {
-//     id: number;
-//     // Add other properties as needed
-// };
-
-// const BlogPage: React.FC<{ params: { id: string } }> = ({ params }) => {
-//     const blogPost = useMemo(() => {
-//         const postId = parseInt(params.id, 10);
-//         return blog_data.find((post: BlogPost) => post.id === postId) || null;
-//     }, [params.id]);
-
-//     if (!blogPost) {
-//         return <div>Blog post not found</div>;
-//     }
-
-//     return (
-//         <div>
-//             <h1>{params.id}</h1>
-//             {/* Render other blog post details here */}
-//         </div>
-//     );
-// };
+import axios from 'axios';
 
 const BlogPage = ({ params }) => {
     const [data, setData] = useState(null);
 
-    const fetchBlogData = () => {
-        for (let i = 0; i < blog_data.length; i++) {
-            if (Number(params.id) === blog_data[i].id) {
-                setData(blog_data[i]);
-                console.log(blog_data[i]);
-                break;
-            }
-        }
+    const fetchBlogData = async () => {
+        const response = await axios.get('/api/blog', {
+            params: {
+                id: params.id,
+            },
+        });
+        setData(response.data);
     };
 
     useEffect(() => {
@@ -68,7 +44,7 @@ const BlogPage = ({ params }) => {
                     </h1>
                     <Image
                         className='mx-auto mt-6 border border-white rounded-full '
-                        src={data?.author_img}
+                        src={data?.authorImg}
                         alt=''
                         width={60}
                         height={60}
@@ -86,69 +62,9 @@ const BlogPage = ({ params }) => {
                     height={720}
                     alt=''
                 ></Image>
-                <h1 className='my-8 text-[26px] font-semibold'>
-                    Introduction:
-                </h1>
+
                 <p className=''>{data.description}</p>
-                <h3 className='my-5 text-[18px] font-semibold'>
-                    Step 1: Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit. Fugiat magnam perspiciatis sit? Voluptas, mollitia
-                    accusamus.
-                </h3>
-                <p className='my-3'>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Eum voluptatum, temporibus autem ipsum voluptate quod
-                    dignissimos earum dicta magnam ipsam deserunt quia,
-                    praesentium, distinctio iusto!
-                </p>
-                <p className='my-3'>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Eum voluptatum, temporibus autem ipsum voluptate quod
-                    dignissimos earum dicta magnam ipsam deserunt quia,
-                    praesentium, distinctio iusto!
-                </p>
-                <h3 className='my-5 text-[18px] font-semibold'>
-                    Step 2: Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit. Nobis sapiente earum dignissimos iure voluptates
-                    excepturi totam perspiciatis dolores nostrum unde.
-                </h3>
-                <p className='my-3'>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Laboriosam minus magnam, officiis nam animi provident quidem
-                    velit repellendus quibusdam magni nisi quasi ab id! Numquam
-                    assumenda quam non nemo laudantium?
-                </p>
-                <p className='my-3'>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Quisquam aperiam doloribus nesciunt veniam itaque quia
-                    ratione quaerat quasi aliquam corrupti quis blanditiis
-                    officiis modi saepe aut, maiores maxime voluptates quod
-                    iusto deserunt!
-                </p>
-                <h3 className='my-5 text-[18px] font-semibold'>
-                    Step 3: Lorem ipsum dolor, sit amet consectetur adipisicing
-                    elit. Modi ullam possimus, suscipit ut temporibus quasi
-                    exercitationem deserunt ad iure nostrum consequatur nulla
-                    repellat hic excepturi dolore. Veniam.
-                </h3>
-                <p className='my-3'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolorum obcaecati possimus laudantium deserunt tempora
-                    nihil, a nesciunt tempore? Nulla eum nobis accusamus
-                    praesentium odio.
-                </p>
-                <p className='my-3'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Officia quo distinctio beatae cumque voluptatem itaque
-                    pariatur commodi excepturi, doloremque enim non iste quaerat
-                    aperiam error repellendus quis minus dicta quidem modi rerum
-                    in nobis tempora!
-                </p>
-                <h3 className='my-5 text-[18px] font-semibold'>Conclusion: </h3>
-                <p className='my-3'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Eius similique atque impedit?
-                </p>
+
                 <div className='my-24'>
                     <p className='text-black font-semibold my-4'>
                         Share this blog article on social media

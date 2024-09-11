@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/config/db';
 import { writeFile } from 'fs/promises';
 import BlogModel from '../../../lib/models/BlogModel';
+const fs = require('fs');
 
 const LoadDB = async () => {
     await connectDB();
@@ -9,11 +10,19 @@ const LoadDB = async () => {
 
 LoadDB();
 
-export async function GET(req: Request) {
-    console.log('GET request received');
-    return NextResponse.json({ message: 'GET request received' });
+//Api endpoint to get all blogs
+export async function GET(request) {
+    const blogId = request.nextUrl.searchParams.get('id');
+    if (blogId) {
+        const blog = await BlogModel.findById(blogId);
+        return NextResponse.json(blog);
+    } else {
+        const blogs = await BlogModel.find({});
+        return NextResponse.json({ blogs });
+    }
 }
 
+// Api endpoint for uploading blogs
 export async function POST(req: Request) {
     const formData = await req.formData();
     const timestamp = Date.now();
@@ -46,4 +55,26 @@ export async function POST(req: Request) {
         // Handle the case where image is not a Blob (e.g., it's null or a string)
         console.error('Invalid Blog data');
     }
+}
+
+export async function DELETE(request) {
+    const id = await request.nextUrl.searchParams.get('id');
+    const blog = await BlogModel.findById(id);
+
+    fs.unlink(
+        `./public${blog.image}`,
+        (err) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            console.log('Image deleted successfully');
+        },
+        await BlogModel.findByIdAndDelete(id),
+    );
+
+    return NextResponse.json({
+        success: true,
+        message: 'Blog deleted successfully',
+    });
 }
