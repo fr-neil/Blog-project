@@ -6,8 +6,8 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import axios from 'axios';
 
-const BlogPage = ({ params }) => {
-    const [data, setData] = useState(null);
+const BlogPage = ({ params }: { params: { id: string } }) => {
+    const [data, setData] = useState<any>(null); // Specify type for data if known
 
     const fetchBlogData = async () => {
         const response = await axios.get('/api/blog', {
@@ -20,6 +20,7 @@ const BlogPage = ({ params }) => {
 
     useEffect(() => {
         fetchBlogData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return data ? (

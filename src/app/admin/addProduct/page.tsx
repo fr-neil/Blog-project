@@ -1,12 +1,12 @@
 'use client';
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { assets } from '../../../../assets/assets';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const page = () => {
-    const [image, setImage] = useState(false);
+const Page = () => {
+    const [image, setImage] = useState<File | null>(null); // Change to File | null
     const [data, setData] = useState({
         title: '',
         description: '',
@@ -30,12 +30,12 @@ const page = () => {
         formData.append('category', data.category);
         formData.append('author', data.author);
         formData.append('authorImg', data.authorImg);
-        formData.append('image', image as Blob);
+        formData.append('image', image as Blob); // This will now be valid if image is not null
 
         const response = await axios.post('/api/blog', formData);
         if (response.data.success) {
             toast.success('Blog added successfully');
-            setImage(false);
+            setImage(null); // Change false to null
             setData({
                 title: '',
                 description: '',
@@ -122,4 +122,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

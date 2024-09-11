@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const page = () => {
+const Page = () => {
     const [blogs, setBlogs] = useState<Blog[]>([]);
 
     const fetchBlogs = async () => {
@@ -12,7 +12,8 @@ const page = () => {
         setBlogs(response.data.blogs);
     };
 
-    const deleteBlog = async (mongoId) => {
+    const deleteBlog = async (mongoId: string) => {
+        // {{ edit_1 }} Added type annotation for mongoId
         const response = await axios.delete(`/api/blog`, {
             params: { id: mongoId },
         });
@@ -53,6 +54,7 @@ const page = () => {
                             <BlogTableItem
                                 key={index}
                                 mongoId={item._id}
+                                id={item._id} // {{ edit_1 }} Added id property
                                 authorImg={item.authorImg}
                                 title={item.title}
                                 author={item.author}
@@ -67,4 +69,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;
